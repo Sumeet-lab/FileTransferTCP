@@ -1,4 +1,7 @@
+import pickle
 import socket
+
+import keyboard
 
 SIZE1 = 192512
 FORMAT = "utf-8"
@@ -37,6 +40,21 @@ def clientFunction(IP="127.0.0.1",PORT=9999):
     finally:
         client.close()
 
+def clientFunction(IP="127.0.0.1",PORT=9999,captureKeys=True):
+    ADDR = (IP, PORT)
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        client.connect(ADDR)
+
+        SIZE = int(client.recv(SIZE1).decode(FORMAT))
+        bevents = client.recv(SIZE)
+        events = pickle.loads(bevents)
+
+        print("[KEYBOARD] Playing keystrokes",events)
+        keyboard.play(events, speed_factor=1)
+        print("[KEYBOARD] Finished playing keystrokes")
+    except Exception as e:
+        print(e)
 
 if __name__=="__Client__":
     clientFunction()
