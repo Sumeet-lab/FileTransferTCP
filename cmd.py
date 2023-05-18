@@ -1,10 +1,10 @@
 import subprocess
 
 # Run a CMD command
-command = ''  # Replace with your desired command
+command = 'ping'  # Replace with your desired command
 
 def execute(command):
-    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen( command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
 
     # Print the output and error

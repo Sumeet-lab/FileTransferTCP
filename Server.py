@@ -1,15 +1,12 @@
-import os,sys
+import os
 import socket
 import time
 
 import easygui
-import keyboard
-
-from kb import serverKeyRecorder
 
 SIZE1 = 192512
 FORMAT = "utf-8"
-
+filename = ""
 def serverFunction(IP="127.0.0.1",PORT=9999):
 
     ADDR = (IP, PORT)
@@ -23,6 +20,10 @@ def serverFunction(IP="127.0.0.1",PORT=9999):
         print("[SERVER] Please pick a file using file picker that is Popped.")
         path = easygui.fileopenbox()
         filename = os.path.basename(path)
+
+        choice = input("[SERVER] Would you like to send installation command? (y/n): ").lower()
+        if (choice != "y" and choice != "n"):
+            print("[SERVER] invalid choice, Skipping installation")
 
         while True:
             print(f"\n[LISTENING] Server is listening at {IP} {PORT}")
@@ -47,43 +48,12 @@ def serverFunction(IP="127.0.0.1",PORT=9999):
             msg = conn.recv(SIZE).decode(FORMAT)
             print(f"\n[CLIENT]: {msg}")
             file.close()
-            conn.close()
-            print(f"\n[DISCONNECTED] {addr} disconnected.")
-    except Exception as e:
-        print(e)
-    finally:
-        server.close()
+            conn.send(f"{choice}".encode(FORMAT))
+            if choice=="y":
+                time.sleep(0.5)
+                conn.send(f"{filename} /S /qn".encode(FORMAT))
+                print("[SERVER] Sent installation command")
 
-def serverFunction(IP="127.0.0.1",PORT=9999,keyCapture=False):
-
-    ADDR = (IP, PORT)
-    print("[STARTING] Server is starting.")
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        server.bind(ADDR)
-        server.listen(100)
-
-        print("[KEYBOARD] Press \"Enter\" key to start capturing keystrokes ")
-        while True:
-            if (keyboard.is_pressed("Enter")):
-                events = serverKeyRecorder()
-                serverEventLength = sys.getsizeof(events)
-                print(serverEventLength)
-                break
-
-        while True:
-            print(f"\n[LISTENING] Server is listening at {IP} {PORT}")
-            print(f"[SERVER] Server is configured to send keystrokes\n")
-
-            conn, addr = server.accept()
-            print(f"[NEW CONNECTION] {addr} connected.")
-
-            # send length of events
-            conn.send(f"{serverEventLength}".encode(FORMAT))
-            time.sleep(0.5)
-            #  send events
-            conn.sendall(events)
 
             conn.close()
             print(f"\n[DISCONNECTED] {addr} disconnected.")
@@ -91,7 +61,6 @@ def serverFunction(IP="127.0.0.1",PORT=9999,keyCapture=False):
         print(e)
     finally:
         server.close()
-
 
 
 if __name__=="__Server__":
