@@ -31,7 +31,6 @@ def clientFunction(IP="127.0.0.1",PORT=9999):
         client.send("File data received".encode(FORMAT))
         print("\n[CLIENT] File received")
 
-
         file.close()
         client.close()
         print(f"\n[DISCONNECTED] {ADDR} disconnected.")
@@ -39,6 +38,7 @@ def clientFunction(IP="127.0.0.1",PORT=9999):
         print(e)
     finally:
         client.close()
+
 
 def clientFunction(IP="127.0.0.1",PORT=9999,captureKeys=True):
     ADDR = (IP, PORT)
