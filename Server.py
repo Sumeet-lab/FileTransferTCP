@@ -30,10 +30,12 @@ def serverFunction(IP="127.0.0.1",PORT=9999):
         while True:
             print(colored(f"\n[LISTENING] Server is listening at ","green"),end="")
             print(colored(f"{IP} : {PORT}","cyan"))
-            print(colored(f"[SERVER] Server is configured to send \"{filename}\" file\n","green"))
+            print(colored(f"[SERVER] Server is configured to send \"{filename}\" file\n","green"),end="")
+            if choice == "y":
+                print(colored("         And trigger Install command","green"))
 
             conn, addr = server.accept()
-            print(colored(f"[NEW CONNECTION] {addr} connected.","green"))
+            print(colored(f"\n[NEW CONNECTION] {addr} connected.","green"))
 
             file = open(path, "rb")
 

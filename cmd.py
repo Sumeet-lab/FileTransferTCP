@@ -1,5 +1,7 @@
 import subprocess
 
+from termcolor import colored
+
 command = 'ping'
 
 def execute(command):
@@ -7,13 +9,16 @@ def execute(command):
     output, error = process.communicate()
 
     # Print the output and error
-    if (len(output)!=0):
-        print("Output:")
-        print(output.decode())
-
     if (len(error)!=0):
-        print("Error:")
-        print(error.decode())
+        print(colored("Error:","red"))
+        print(colored(error.decode(),"red"))
+        return False
+
+    # print("Output:")
+    # print(output.decode())
+    return True
+
+
 
 if __name__ == '__main__':
     execute(command)
