@@ -2,7 +2,7 @@ import subprocess
 
 from termcolor import colored
 
-command = 'ping'
+command = ''
 
 def execute(command):
     process = subprocess.Popen( command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
